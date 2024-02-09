@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useTasks } from '../contexts/TaskContext';
 
+import '../styles/Home.css';
+
 function Home() {
   const { taskData, setTasksData } = useTasks();
 
@@ -39,9 +41,34 @@ function Home() {
 
   // Renderizar tarefas
   console.log(taskData);
+  // Organizar tarefas em colunas
+
+  const renderColumns = () => {
+    // const columns = organizeTasks();
+    const columns = {
+      TODO: [],
+      DOING: [],
+      HOLD: [],
+      DONE: [],
+    };
+
+    return (
+      <div className="columns">
+        {Object.keys(columns).map((columnName) => (
+          <div key={columnName} className="column">
+            <h2>{columnName}</h2>
+            {columns[columnName]}
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
-    <>ToDo App!</>
+    <div className="todo-app">
+      <h1>To Do App</h1>
+      {renderColumns()}
+    </div>
   );
 }
 
