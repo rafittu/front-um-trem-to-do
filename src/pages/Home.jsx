@@ -271,7 +271,6 @@ function Home() {
       <section>
         <div className="user-actions">
           <Link to="/login">Entrar</Link>
-          <Link to="/cadastro">Cadastrar</Link>
         </div>
 
         <h1>To Do App</h1>
