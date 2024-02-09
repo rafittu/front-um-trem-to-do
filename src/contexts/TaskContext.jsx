@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const TaskContext = createContext();
 
 export function TaskProvider({ children }) {
-  const [taskData, setTaskData] = useState({});
+  const [taskData, setTaskData] = useState([]);
 
   const taskContext = useMemo(
     () => ({
