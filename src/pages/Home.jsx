@@ -5,6 +5,7 @@ import { useTasks } from '../contexts/TaskContext';
 import '../styles/Home.css';
 
 function Home() {
+  const [userLogged, setUserLogged] = useState(false);
   const { taskData, setTaskData } = useTasks();
   const [showNewTaskForm, setShowNewTaskForm] = useState(false);
   const [newTask, setNewTask] = useState({
@@ -16,11 +17,14 @@ function Home() {
     categories: [],
     status: '',
   });
+  const [expandedTaskId, setExpandedTaskId] = useState(null);
 
   const accessToken = localStorage.getItem('keevoAccessToken');
 
   const getUserTasks = async () => {
     if (accessToken) {
+      setUserLogged(true);
+
       try {
         const response = await axios.get('http://localhost:3001/task/filter', {
           headers: {
@@ -41,6 +45,42 @@ function Home() {
     getUserTasks();
   }, [newTask]);
 
+  const createUserTask = async () => {
+    try {
+      await axios.post('http://localhost:3001/task/create', newTask, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setShowNewTaskForm(false);
+      setNewTask({
+        id: '',
+        title: '',
+        description: '',
+        priority: '',
+        dueDate: '',
+        categories: [],
+        status: '',
+      });
+      getUserTasks();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteUserTask = async (taskId) => {
+    try {
+      await axios.delete(`http://localhost:3001/task/delete/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      getUserTasks();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleAddTask = async () => {
     if (newTask.title.length < 3 || newTask.title.length > 180) {
       alert('O título deve ter entre 3 e 180 caracteres.');
@@ -52,11 +92,15 @@ function Home() {
       return;
     }
 
+    if (userLogged) {
+      createUserTask();
+      return;
+    }
+
     newTask.id = Math.random();
     newTask.status = 'TODO';
 
     const userTasks = JSON.parse(localStorage.getItem('userTasks')) || [];
-
     const updatedTasks = [...userTasks, newTask];
 
     localStorage.setItem('userTasks', JSON.stringify(updatedTasks));
@@ -85,6 +129,11 @@ function Home() {
   };
 
   const handleDeleteTask = (taskId) => {
+    if (userLogged) {
+      deleteUserTask(taskId);
+      return;
+    }
+
     const updatedTasks = taskData.filter((task) => task.id !== taskId);
     localStorage.setItem('userTasks', JSON.stringify(updatedTasks));
     setTaskData(updatedTasks);
@@ -120,22 +169,31 @@ function Home() {
       )}
 
       {taskData.map((task) => (
-        <div key={task.id} className={`task-card priority-${task.priority}`}>
+        <div
+          key={task.id}
+          className={`task-card priority-${task.priority}`}
+          onMouseEnter={() => setExpandedTaskId(task.id)}
+          onMouseLeave={() => setExpandedTaskId(null)}
+        >
           <button type="button" className="delete-button" onClick={() => handleDeleteTask(task.id)}>X</button>
           <h3>{task.title}</h3>
           <p>{task.description}</p>
-          <p>
-            Data de Vencimento:
-            {task.dueDate}
-          </p>
-          <p>
-            Categorias:
-            {task.categories.join(', ')}
-          </p>
-          <p>
-            Status:
-            {task.status}
-          </p>
+          {expandedTaskId === task.id && (
+          <>
+            <p>
+              Data de Vencimento:
+              {task.dueDate}
+            </p>
+            <p>
+              Categorias:
+              {task.categories.join(', ')}
+            </p>
+            <p>
+              Status:
+              {task.status}
+            </p>
+          </>
+          )}
         </div>
       ))}
 
