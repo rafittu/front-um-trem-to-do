@@ -175,6 +175,70 @@ function Home() {
     }
   };
 
+  const renderTasksByStatus = (status) => taskData
+    .filter((task) => task.status === status)
+    .map((task) => (
+      <div
+        key={task.id}
+        className={`task-card priority-${task.priority}`}
+        onMouseEnter={() => setExpandedTaskId(task.id)}
+        onMouseLeave={() => setExpandedTaskId(null)}
+      >
+        <button type="button" className="delete-button" onClick={() => handleDeleteTask(task.id)}>X</button>
+        <h3>{task.title}</h3>
+        <p>{task.description}</p>
+        {expandedTaskId === task.id && (
+        <>
+          <p>
+            Data de Vencimento:
+            {task.dueDate}
+          </p>
+          <p>
+            Categorias:
+            {task.categories.join(', ')}
+          </p>
+          <p>
+            Status:
+            {task.status}
+          </p>
+          <button type="button" onClick={() => handleEditTask(task.id)}>Editar</button>
+        </>
+        )}
+        {editedTask && editedTask.id === task.id && (
+        <div>
+          <input type="text" value={editedTask.title} onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })} />
+          <textarea
+            value={editedTask.description}
+            onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
+          />
+          <select
+            value={editedTask.priority}
+            onChange={(e) => setEditedTask({ ...editedTask, priority: e.target.value })}
+          >
+            <option value="">Selecione a prioridade</option>
+            <option value="low">Baixa</option>
+            <option value="medium">Média</option>
+            <option value="high">Alta</option>
+            <option value="urgent">Urgente</option>
+          </select>
+          <input type="date" value={editedTask.dueDate} onChange={(e) => setEditedTask({ ...editedTask, dueDate: e.target.value })} />
+          <input type="text" placeholder="Categorias (separadas por vírgula)" value={editedTask.categories.join(', ')} onChange={(e) => setEditedTask({ ...editedTask, categories: e.target.value.split(', ') })} />
+          <select
+            value={editedTask.status}
+            onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value })}
+          >
+            <option value="">Selecione o status</option>
+            <option value="TODO">TODO</option>
+            <option value="DOING">DOING</option>
+            <option value="HOLD">HOLD</option>
+            <option value="DONE">DONE</option>
+          </select>
+          <button type="button" onClick={handleSaveEdit}>Salvar</button>
+        </div>
+        )}
+      </div>
+    ));
+
   return (
     <div className="todo-app">
       <section>
@@ -182,90 +246,46 @@ function Home() {
         <button type="button" onClick={handleNewTaskClick}>+ NOVA TAREFA</button>
       </section>
 
-      { showNewTaskForm && (
-      <div className="new-task">
-        <h2>Nova Tarefa</h2>
-        <input type="text" placeholder="Título" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} />
-        <textarea placeholder="Descrição" value={newTask.description} onChange={(e) => setNewTask({ ...newTask, description: e.target.value })} />
-        <select
-          value={newTask.priority}
-          onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
-        >
-          <option value="">Selecione a prioridade</option>
-          <option value="low">Baixa</option>
-          <option value="medium">Média</option>
-          <option value="high">Alta</option>
-          <option value="urgent">Urgente</option>
-        </select>
-        <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} />
-        <input type="text" placeholder="Categorias (separadas por vírgula)" value={newTask.categories.join(', ')} onChange={(e) => setNewTask({ ...newTask, categories: e.target.value.split(', ') })} />
-        <button type="button" onClick={handleAddTask}>Adicionar Tarefa</button>
-        <button type="button" onClick={() => setShowNewTaskForm(false)}>Cancelar</button>
-      </div>
+      {showNewTaskForm && (
+        <div className="new-task">
+          <h2>Nova Tarefa</h2>
+          <input type="text" placeholder="Título" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} />
+          <textarea placeholder="Descrição" value={newTask.description} onChange={(e) => setNewTask({ ...newTask, description: e.target.value })} />
+          <select
+            value={newTask.priority}
+            onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
+          >
+            <option value="">Selecione a prioridade</option>
+            <option value="low">Baixa</option>
+            <option value="medium">Média</option>
+            <option value="high">Alta</option>
+            <option value="urgent">Urgente</option>
+          </select>
+          <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} />
+          <input type="text" placeholder="Categorias (separadas por vírgula)" value={newTask.categories.join(', ')} onChange={(e) => setNewTask({ ...newTask, categories: e.target.value.split(', ') })} />
+          <button type="button" onClick={handleAddTask}>Adicionar Tarefa</button>
+          <button type="button" onClick={() => setShowNewTaskForm(false)}>Cancelar</button>
+        </div>
       )}
 
-      {taskData.map((task) => (
-        <div
-          key={task.id}
-          className={`task-card priority-${task.priority}`}
-          onMouseEnter={() => setExpandedTaskId(task.id)}
-          onMouseLeave={() => setExpandedTaskId(null)}
-        >
-          <button type="button" className="delete-button" onClick={() => handleDeleteTask(task.id)}>X</button>
-          <h3>{task.title}</h3>
-          <p>{task.description}</p>
-          {expandedTaskId === task.id && (
-          <>
-            <p>
-              Data de Vencimento:
-              {task.dueDate}
-            </p>
-            <p>
-              Categorias:
-              {task.categories.join(', ')}
-            </p>
-            <p>
-              Status:
-              {task.status}
-            </p>
-            <button type="button" onClick={() => handleEditTask(task.id)}>Editar</button>
-          </>
-          )}
-          {editedTask && editedTask.id === task.id && (
-          <div>
-            <input type="text" value={editedTask.title} onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })} />
-            <textarea
-              value={editedTask.description}
-              onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
-            />
-            <select
-              value={editedTask.priority}
-              onChange={(e) => setEditedTask({ ...editedTask, priority: e.target.value })}
-            >
-              <option value="">Selecione a prioridade</option>
-              <option value="low">Baixa</option>
-              <option value="medium">Média</option>
-              <option value="high">Alta</option>
-              <option value="urgent">Urgente</option>
-            </select>
-            <input type="date" value={editedTask.dueDate} onChange={(e) => setEditedTask({ ...editedTask, dueDate: e.target.value })} />
-            <input type="text" placeholder="Categorias (separadas por vírgula)" value={editedTask.categories.join(', ')} onChange={(e) => setEditedTask({ ...editedTask, categories: e.target.value.split(', ') })} />
-            <select
-              value={editedTask.status}
-              onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value })}
-            >
-              <option value="">Selecione o status</option>
-              <option value="TODO">TODO</option>
-              <option value="DOING">DOING</option>
-              <option value="HOLD">HOLD</option>
-              <option value="DONE">DONE</option>
-            </select>
-            <button type="button" onClick={handleSaveEdit}>Salvar</button>
-          </div>
-          )}
+      <div className="columns">
+        <div className="column">
+          <h2>TODO</h2>
+          {renderTasksByStatus('TODO')}
         </div>
-      ))}
-
+        <div className="column">
+          <h2>DOING</h2>
+          {renderTasksByStatus('DOING')}
+        </div>
+        <div className="column">
+          <h2>HOLD</h2>
+          {renderTasksByStatus('HOLD')}
+        </div>
+        <div className="column">
+          <h2>DONE</h2>
+          {renderTasksByStatus('DONE')}
+        </div>
+      </div>
     </div>
   );
 }
