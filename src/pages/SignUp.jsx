@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import InputLabel from '../components/InputLabel';
 
+import '../styles/Signup.css';
+
 function SignUp() {
   const navigate = useNavigate();
 
