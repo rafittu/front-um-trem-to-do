@@ -1,12 +1,11 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import Home from '../pages/Home';
 
 function Router() {
   return (
     <Routes>
-      <Route exact path="/signin" element={<SignIn />} />
-      <Route exact path="/signup" element={<SignUp />} />
-      <Route exact path="/" element={<SignIn />} />
+      <Route exact path="/" element={<Home />} />
     </Routes>
   );
 }
