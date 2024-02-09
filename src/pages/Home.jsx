@@ -75,6 +75,12 @@ function Home() {
     });
   };
 
+  const handleDeleteTask = (taskId) => {
+    const updatedTasks = taskData.filter((task) => task.id !== taskId);
+    localStorage.setItem('userTasks', JSON.stringify(updatedTasks));
+    setTaskData(updatedTasks);
+  };
+
   return (
     <div className="todo-app">
       <section>
@@ -106,6 +112,7 @@ function Home() {
 
       {taskData.map((task) => (
         <div key={task.id} className={`task-card priority-${task.priority}`}>
+          <button type="button" className="delete-button" onClick={() => handleDeleteTask(task.id)}>X</button>
           <h3>{task.title}</h3>
           <p>{task.description}</p>
           <p>
