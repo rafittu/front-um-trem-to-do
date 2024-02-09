@@ -18,6 +18,7 @@ function Home() {
     status: '',
   });
   const [expandedTaskId, setExpandedTaskId] = useState(null);
+  const [editedTask, setEditedTask] = useState(null);
 
   const accessToken = localStorage.getItem('keevoAccessToken');
 
@@ -43,7 +44,7 @@ function Home() {
 
   useEffect(() => {
     getUserTasks();
-  }, [newTask]);
+  }, [newTask, editedTask]);
 
   const createUserTask = async () => {
     try {
@@ -75,6 +76,20 @@ function Home() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+      getUserTasks();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateUserTask = async () => {
+    try {
+      await axios.patch(`http://localhost:3001/task/update/${editedTask.id}`, editedTask, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setEditedTask(null);
       getUserTasks();
     } catch (error) {
       console.error(error);
@@ -139,6 +154,27 @@ function Home() {
     setTaskData(updatedTasks);
   };
 
+  const handleEditTask = (taskId) => {
+    const taskToEdit = taskData.find((task) => task.id === taskId);
+    setEditedTask(taskToEdit);
+  };
+
+  const handleSaveEdit = () => {
+    if (userLogged) {
+      updateUserTask();
+    } else {
+      const updatedTasks = taskData.map((task) => {
+        if (task.id === editedTask.id) {
+          return editedTask;
+        }
+        return task;
+      });
+      localStorage.setItem('userTasks', JSON.stringify(updatedTasks));
+      setTaskData(updatedTasks);
+      setEditedTask(null);
+    }
+  };
+
   return (
     <div className="todo-app">
       <section>
@@ -192,7 +228,40 @@ function Home() {
               Status:
               {task.status}
             </p>
+            <button type="button" onClick={() => handleEditTask(task.id)}>Editar</button>
           </>
+          )}
+          {editedTask && editedTask.id === task.id && (
+          <div>
+            <input type="text" value={editedTask.title} onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })} />
+            <textarea
+              value={editedTask.description}
+              onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
+            />
+            <select
+              value={editedTask.priority}
+              onChange={(e) => setEditedTask({ ...editedTask, priority: e.target.value })}
+            >
+              <option value="">Selecione a prioridade</option>
+              <option value="low">Baixa</option>
+              <option value="medium">Média</option>
+              <option value="high">Alta</option>
+              <option value="urgent">Urgente</option>
+            </select>
+            <input type="date" value={editedTask.dueDate} onChange={(e) => setEditedTask({ ...editedTask, dueDate: e.target.value })} />
+            <input type="text" placeholder="Categorias (separadas por vírgula)" value={editedTask.categories.join(', ')} onChange={(e) => setEditedTask({ ...editedTask, categories: e.target.value.split(', ') })} />
+            <select
+              value={editedTask.status}
+              onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value })}
+            >
+              <option value="">Selecione o status</option>
+              <option value="TODO">TODO</option>
+              <option value="DOING">DOING</option>
+              <option value="HOLD">HOLD</option>
+              <option value="DONE">DONE</option>
+            </select>
+            <button type="button" onClick={handleSaveEdit}>Salvar</button>
+          </div>
           )}
         </div>
       ))}
