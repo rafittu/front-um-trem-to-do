@@ -19,6 +19,13 @@ function Home() {
   });
   const [expandedTaskId, setExpandedTaskId] = useState(null);
   const [editedTask, setEditedTask] = useState(null);
+  const [filtersVisible, setFiltersVisible] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({
+    priority: '',
+    dueDate: '',
+    categories: '',
+    status: '',
+  });
 
   const accessToken = localStorage.getItem('keevoAccessToken');
 
@@ -177,6 +184,14 @@ function Home() {
 
   const renderTasksByStatus = (status) => taskData
     .filter((task) => task.status === status)
+    .filter((task) => {
+      if (filterOptions.priority && task.priority !== filterOptions.priority) return false;
+      if (filterOptions.dueDate && task.dueDate !== filterOptions.dueDate) return false;
+      if (filterOptions.categories
+        && !task.categories.includes(filterOptions.categories)) return false;
+      if (filterOptions.status && task.status !== filterOptions.status) return false;
+      return true;
+    })
     .map((task) => (
       <div
         key={task.id}
@@ -239,12 +254,61 @@ function Home() {
       </div>
     ));
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilterOptions((prevOptions) => ({ ...prevOptions, [name]: value }));
+  };
+
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    setFiltersVisible(false);
+  };
+
   return (
     <div className="todo-app">
       <section>
         <h1>To Do App</h1>
-        <button type="button" onClick={handleNewTaskClick}>+ NOVA TAREFA</button>
+        <div>
+          <button type="button" onClick={handleNewTaskClick}>+ NOVA TAREFA</button>
+          <button type="button" onClick={() => setFiltersVisible(!filtersVisible)}>FILTROS</button>
+        </div>
       </section>
+
+      {filtersVisible && (
+        <form onSubmit={handleFilterSubmit}>
+          <div className="filters">
+            <label htmlFor="priority">
+              Prioridade:
+              <select id="priority" name="priority" value={filterOptions.priority} onChange={handleFilterChange}>
+                <option value="">Todas</option>
+                <option value="low">Baixa</option>
+                <option value="medium">Média</option>
+                <option value="high">Alta</option>
+                <option value="urgent">Urgente</option>
+              </select>
+            </label>
+            <label htmlFor="dueDate">
+              Data de Vencimento:
+              <input id="dueDate" type="date" name="dueDate" value={filterOptions.dueDate} onChange={handleFilterChange} />
+            </label>
+            <label htmlFor="categories">
+              Categorias:
+              <input id="categories" type="text" name="categories" value={filterOptions.categories} onChange={handleFilterChange} />
+            </label>
+            <label htmlFor="status">
+              Status:
+              <select id="status" name="status" value={filterOptions.status} onChange={handleFilterChange}>
+                <option value="">Todos</option>
+                <option value="TODO">TODO</option>
+                <option value="DOING">DOING</option>
+                <option value="HOLD">HOLD</option>
+                <option value="DONE">DONE</option>
+              </select>
+            </label>
+            <button type="submit">Aplicar Filtros</button>
+          </div>
+        </form>
+      )}
 
       {showNewTaskForm && (
         <div className="new-task">
