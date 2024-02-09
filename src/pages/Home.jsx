@@ -42,7 +42,16 @@ function Home() {
   }, [newTask]);
 
   const handleAddTask = async () => {
-    console.log(newTask);
+    if (newTask.title.length < 3 || newTask.title.length > 180) {
+      alert('O título deve ter entre 3 e 180 caracteres.');
+      return;
+    }
+
+    if (newTask.description.length < 5 || newTask.description.length > 700) {
+      alert('A descrição deve ter entre 5 e 700 caracteres.');
+      return;
+    }
+
     newTask.id = Math.random();
     newTask.status = 'TODO';
 
