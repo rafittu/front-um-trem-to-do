@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 import { useTasks } from '../contexts/TaskContext';
 
@@ -267,10 +269,15 @@ function Home() {
   return (
     <div className="todo-app">
       <section>
+        <div className="user-actions">
+          <Link to="/login">Entrar</Link>
+          <Link to="/cadastro">Cadastrar</Link>
+        </div>
+
         <h1>To Do App</h1>
         <div>
-          <button type="button" onClick={handleNewTaskClick}>+ NOVA TAREFA</button>
-          <button type="button" onClick={() => setFiltersVisible(!filtersVisible)}>FILTROS</button>
+          <button className="new-task-button" type="button" onClick={handleNewTaskClick}>+ NOVA TAREFA</button>
+          <button className="filter-button" type="button" onClick={() => setFiltersVisible(!filtersVisible)}>FILTROS</button>
         </div>
       </section>
 
@@ -325,7 +332,10 @@ function Home() {
             <option value="high">Alta</option>
             <option value="urgent">Urgente</option>
           </select>
-          <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} />
+          <label htmlFor="dueDate">
+            Data de Vencimento:
+            <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} />
+          </label>
           <input type="text" placeholder="Categorias (separadas por vírgula)" value={newTask.categories.join(', ')} onChange={(e) => setNewTask({ ...newTask, categories: e.target.value.split(', ') })} />
           <button type="button" onClick={handleAddTask}>Adicionar Tarefa</button>
           <button type="button" onClick={() => setShowNewTaskForm(false)}>Cancelar</button>
