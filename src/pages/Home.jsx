@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 import { useTasks } from '../contexts/TaskContext';
 
 function Home() {
@@ -40,7 +41,7 @@ function Home() {
   console.log(taskData);
 
   return (
-    <>section</>
+    <>ToDo App!</>
   );
 }
 
