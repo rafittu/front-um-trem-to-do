@@ -1,0 +1,152 @@
+.signIn {
+  background-color: rgb(128, 128, 128, 0.3);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 50px;
+  width: 300px;
+  position: absolute;
+  top: 45%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  color: rgb(1, 8, 14);
+}
+
+.inputs-container:before {
+  content: '';
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-85 21s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+@keyframes glowing-button-85 {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.inputs-container:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #bbb6b6de;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+.inputs-container input {
+  padding: 7px;
+  border-radius: 7px;
+  border: none;
+  box-shadow: inset 0 1px 3px #000;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.inputs-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 3px;
+}
+
+.inputs-buttons button {
+  margin-left: 11px;
+  padding: 2px 7px;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0,
+    rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292e;
+  font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+button:hover {
+  background-color: rgba(89, 102, 110, 0.795);
+  color: white;
+}
+
+.recover-password a {
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+.recover-password p {
+  margin-top: -7px;
+  margin-bottom: 11px;
+  margin-left: 7px;
+  font-size: 15px;
+  text-align: left;
+  color: rgba(68, 89, 109, 0.719);
+  font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+}
+
+.recover-password p:hover {
+  color: rgb(5, 19, 100);
+}
+
+.error-msg p {
+  margin: 0;
+  margin-bottom: 9px;
+  font-size: 15px;
+  text-align: center;
+  color: rgb(126, 2, 2);
+}
+
+@media (max-width: 514px) {
+  .signIn {
+    width: 70%;
+    margin: 20px auto;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .inputs-container label {
+    display: block;
+    margin-bottom: 7px;
+  }
+
+  .inputs-container input {
+    width: 90%;
+  }
+}
