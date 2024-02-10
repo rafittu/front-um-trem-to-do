@@ -116,6 +116,12 @@ function Home() {
       alert('A descrição deve ter entre 5 e 700 caracteres.');
       return;
     }
+
+    if (newTask.dueDate) {
+      const [datePart] = new Date(newTask.dueDate).toISOString().split('T');
+      newTask.dueDate = datePart;
+    }
+
     if (userLogged) {
       createUserTask();
       return;
