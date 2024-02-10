@@ -117,6 +117,11 @@ function Home() {
       return;
     }
 
+    if (newTask.dueDate && new Date() > new Date(newTask.dueDate)) {
+      alert('A data de vencimento da tarefa deve ser posterior a atual.');
+      return;
+    }
+
     if (newTask.dueDate) {
       const [datePart] = new Date(newTask.dueDate).toISOString().split('T');
       newTask.dueDate = datePart;
