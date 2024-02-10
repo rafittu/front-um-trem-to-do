@@ -93,8 +93,20 @@ function Home() {
   };
 
   const updateUserTask = async () => {
+    const idTask = editedTask.taskId;
+
+    delete editedTask.userId;
+    delete editedTask.taskId;
+    delete editedTask.createdAt;
+    delete editedTask.updatedAt;
+
+    if (editedTask.dueDate) {
+      const [datePart] = new Date(editedTask.dueDate).toISOString().split('T');
+      editedTask.dueDate = datePart;
+    }
+
     try {
-      await axios.patch(`http://localhost:3001/task/update/${editedTask.id}`, editedTask, {
+      await axios.patch(`http://localhost:3001/task/update/${idTask}`, editedTask, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
