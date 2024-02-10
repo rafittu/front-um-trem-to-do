@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -16,7 +17,7 @@ function Home() {
     description: '',
     priority: '',
     dueDate: '',
-    categories: [],
+    // categories: [],
     status: '',
   });
   const [expandedTaskId, setExpandedTaskId] = useState(null);
@@ -56,7 +57,6 @@ function Home() {
   }, [newTask, editedTask]);
 
   const createUserTask = async () => {
-    console.log(newTask);
     try {
       await axios.post('http://localhost:3001/task/create', newTask, {
         headers: {
@@ -70,7 +70,7 @@ function Home() {
         description: '',
         priority: '',
         dueDate: '',
-        categories: [],
+        // categories: [],
         status: '',
       });
       getUserTasks();
@@ -141,7 +141,7 @@ function Home() {
       description: '',
       priority: '',
       dueDate: '',
-      categories: [],
+      // categories: [],
       status: '',
     });
     setTaskData(updatedTasks);
@@ -154,7 +154,7 @@ function Home() {
       description: '',
       priority: '',
       dueDate: '',
-      categories: [],
+      // categories: [],
     });
   };
 
@@ -195,8 +195,8 @@ function Home() {
     .filter((task) => {
       if (filterOptions.priority && task.priority !== filterOptions.priority) return false;
       if (filterOptions.dueDate && task.dueDate !== filterOptions.dueDate) return false;
-      if (filterOptions.categories
-        && !task.categories.includes(filterOptions.categories)) return false;
+      // if (filterOptions.categories
+      //   && !task.categories.includes(filterOptions.categories)) return false;
       if (filterOptions.status && task.status !== filterOptions.status) return false;
       return true;
     })
@@ -216,10 +216,10 @@ function Home() {
             Data de Vencimento:
             {task.dueDate}
           </p>
-          <p>
+          {/* <p>
             Categorias:
             {task.categories.join(', ')}
-          </p>
+          </p> */}
           <p>
             Status:
             {task.status}
@@ -245,7 +245,7 @@ function Home() {
             <option value="URGENT">Urgente</option>
           </select>
           <input type="date" value={editedTask.dueDate} onChange={(e) => setEditedTask({ ...editedTask, dueDate: e.target.value })} />
-          <input type="text" placeholder="Categorias (separadas por vírgula)" value={editedTask.categories.join(', ')} onChange={(e) => setEditedTask({ ...editedTask, categories: e.target.value.split(', ') })} />
+          {/* <input type="text" placeholder="Categorias (separadas por vírgula)" value={editedTask.categories.join(', ')} onChange={(e) => setEditedTask({ ...editedTask, categories: e.target.value.split(', ') })} /> */}
           <select
             value={editedTask.status}
             onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value })}
@@ -303,10 +303,10 @@ function Home() {
               Data de Vencimento:
               <input id="dueDate" type="date" name="dueDate" value={filterOptions.dueDate} onChange={handleFilterChange} />
             </label>
-            <label htmlFor="categories">
+            {/* <label htmlFor="categories">
               Categorias:
               <input id="categories" type="text" name="categories" value={filterOptions.categories} onChange={handleFilterChange} />
-            </label>
+            </label> */}
             <label htmlFor="status">
               Status:
               <select id="status" name="status" value={filterOptions.status} onChange={handleFilterChange}>
@@ -341,7 +341,7 @@ function Home() {
             Data de Vencimento:
             <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} />
           </label>
-          <input type="text" placeholder="Categorias (separadas por vírgula)" value={newTask.categories.join(', ')} onChange={(e) => setNewTask({ ...newTask, categories: e.target.value.split(', ') })} />
+          {/* <input type="text" placeholder="Categorias (separadas por vírgula)" value={newTask.categories.join(', ')} onChange={(e) => setNewTask({ ...newTask, categories: e.target.value.split(', ') })} /> */}
           <button type="button" onClick={handleAddTask}>Adicionar Tarefa</button>
           <button type="button" onClick={() => setShowNewTaskForm(false)}>Cancelar</button>
         </div>
