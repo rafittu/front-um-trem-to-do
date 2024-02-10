@@ -233,10 +233,10 @@ function Home() {
             onChange={(e) => setEditedTask({ ...editedTask, priority: e.target.value })}
           >
             <option value="">Selecione a prioridade</option>
-            <option value="low">Baixa</option>
-            <option value="medium">Média</option>
-            <option value="high">Alta</option>
-            <option value="urgent">Urgente</option>
+            <option value="LOW">Baixa</option>
+            <option value="MEDIUM">Média</option>
+            <option value="HIGH">Alta</option>
+            <option value="URGENT">Urgente</option>
           </select>
           <input type="date" value={editedTask.dueDate} onChange={(e) => setEditedTask({ ...editedTask, dueDate: e.target.value })} />
           <input type="text" placeholder="Categorias (separadas por vírgula)" value={editedTask.categories.join(', ')} onChange={(e) => setEditedTask({ ...editedTask, categories: e.target.value.split(', ') })} />
@@ -326,10 +326,10 @@ function Home() {
             onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
           >
             <option value="">Selecione a prioridade</option>
-            <option value="low">Baixa</option>
-            <option value="medium">Média</option>
-            <option value="high">Alta</option>
-            <option value="urgent">Urgente</option>
+            <option value="LOW">Baixa</option>
+            <option value="MEDIUM">Média</option>
+            <option value="HIGH">Alta</option>
+            <option value="URGENT">Urgente</option>
           </select>
           <label htmlFor="dueDate">
             Data de Vencimento:
