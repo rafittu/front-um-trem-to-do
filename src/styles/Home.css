@@ -170,19 +170,19 @@ h1 {
   margin-bottom: 21px;
 }
 
-.task-card.priority-low {
+.task-card.priority-LOW {
   border: 3px solid rgb(63, 226, 63);
 }
 
-.task-card.priority-medium {
+.task-card.priority-MEDIUM {
   border: 3px solid yellow;
 }
 
-.task-card.priority-high {
+.task-card.priority-HIGH {
   border: 3px solid orange;
 }
 
-.task-card.priority-urgent {
+.task-card.priority-URGENT {
   border: 3px solid red;
 }
 

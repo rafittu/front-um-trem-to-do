@@ -146,6 +146,7 @@ function Home() {
 
     newTask.id = Math.random();
     newTask.status = 'TODO';
+    newTask.priority = newTask.priority.toUpperCase();
 
     const userTasks = JSON.parse(localStorage.getItem('userTasks')) || [];
     const updatedTasks = [...userTasks, newTask];
