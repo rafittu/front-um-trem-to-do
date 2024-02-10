@@ -56,6 +56,7 @@ function Home() {
   }, [newTask, editedTask]);
 
   const createUserTask = async () => {
+    console.log(newTask);
     try {
       await axios.post('http://localhost:3001/task/create', newTask, {
         headers: {
@@ -115,7 +116,6 @@ function Home() {
       alert('A descrição deve ter entre 5 e 700 caracteres.');
       return;
     }
-
     if (userLogged) {
       createUserTask();
       return;

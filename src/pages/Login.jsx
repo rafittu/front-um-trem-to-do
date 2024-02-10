@@ -30,7 +30,7 @@ function Login() {
       });
 
       const { accessToken } = response.data;
-      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('keevoAccessToken', accessToken);
 
       return true;
     } catch (err) {
