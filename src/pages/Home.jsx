@@ -311,10 +311,10 @@ function Home() {
               Prioridade:
               <select id="priority" name="priority" value={filterOptions.priority} onChange={handleFilterChange}>
                 <option value="">Todas</option>
-                <option value="low">Baixa</option>
-                <option value="medium">Média</option>
-                <option value="high">Alta</option>
-                <option value="urgent">Urgente</option>
+                <option value="LOW">Baixa</option>
+                <option value="MEDIUM">Média</option>
+                <option value="HIGH">Alta</option>
+                <option value="URGENT">Urgente</option>
               </select>
             </label>
             <label htmlFor="dueDate">
