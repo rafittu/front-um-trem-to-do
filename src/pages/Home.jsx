@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-
 import axios from 'axios';
 import { useTasks } from '../contexts/TaskContext';
+import Header from '../components/Header';
+import NewTaskForm from '../components/NewTaskForm';
 
 import '../styles/Home.css';
-import Header from '../components/Header';
 
 function Home() {
   const [userLogged, setUserLogged] = useState(false);
@@ -333,29 +333,13 @@ function Home() {
         </form>
       )}
 
-      {showNewTaskForm && (
-        <div className="new-task">
-          <h2>Nova Tarefa</h2>
-          <input type="text" placeholder="Título" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} />
-          <textarea placeholder="Descrição" value={newTask.description} onChange={(e) => setNewTask({ ...newTask, description: e.target.value })} />
-          <select
-            value={newTask.priority}
-            onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
-          >
-            <option value="">Selecione a prioridade</option>
-            <option value="LOW">Baixa</option>
-            <option value="MEDIUM">Média</option>
-            <option value="HIGH">Alta</option>
-            <option value="URGENT">Urgente</option>
-          </select>
-          <label htmlFor="dueDate">
-            Data de Vencimento:
-            <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} />
-          </label>
-          <button type="button" onClick={handleAddTask}>Adicionar Tarefa</button>
-          <button type="button" onClick={() => setShowNewTaskForm(false)}>Cancelar</button>
-        </div>
-      )}
+      <NewTaskForm
+        showNewTaskForm={showNewTaskForm}
+        handleAddTask={handleAddTask}
+        setShowNewTaskForm={setShowNewTaskForm}
+        newTask={newTask}
+        setNewTask={setNewTask}
+      />
 
       <div className="columns">
         <div className="column">
