@@ -29,6 +29,7 @@ function Home() {
     categories: '',
     status: '',
   });
+  const [apiErrorMessage, setApiErrorMessage] = useState('');
 
   const accessToken = localStorage.getItem('keevoAccessToken');
 
@@ -43,8 +44,9 @@ function Home() {
           },
         });
         setTaskData(response.data);
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        const errorMessage = error?.response?.data?.error?.message;
+        setApiErrorMessage(errorMessage);
       }
     } else {
       const userLocalStorageTasks = JSON.parse(localStorage.getItem('userTasks')) || [];
@@ -75,7 +77,8 @@ function Home() {
       });
       getUserTasks();
     } catch (error) {
-      console.error(error);
+      const errorMessage = error?.response?.data?.error?.message;
+      setApiErrorMessage(errorMessage);
     }
   };
 
@@ -88,7 +91,8 @@ function Home() {
       });
       getUserTasks();
     } catch (error) {
-      console.error(error);
+      const errorMessage = error?.response?.data?.error?.message;
+      setApiErrorMessage(errorMessage);
     }
   };
 
@@ -114,7 +118,8 @@ function Home() {
       setEditedTask(null);
       getUserTasks();
     } catch (error) {
-      console.error(error);
+      const errorMessage = error?.response?.data?.error?.message;
+      setApiErrorMessage(errorMessage);
     }
   };
 
@@ -383,6 +388,10 @@ function Home() {
           {renderTasksByStatus('DONE')}
         </div>
       </div>
+
+      {apiErrorMessage && (
+      <div className="error-message">{apiErrorMessage}</div>
+      )}
     </div>
   );
 }
