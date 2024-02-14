@@ -1,11 +1,10 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 import { useTasks } from '../contexts/TaskContext';
 
 import '../styles/Home.css';
+import Header from '../components/Header';
 
 function Home() {
   const [userLogged, setUserLogged] = useState(false);
@@ -295,19 +294,13 @@ function Home() {
     setFiltersVisible(false);
   };
 
+  const toggleFilters = () => {
+    setFiltersVisible(!filtersVisible);
+  };
+
   return (
     <div className="todo-app">
-      <section>
-        <div className="user-actions">
-          <Link to="/login">Entrar</Link>
-        </div>
-
-        <h1>To Do App</h1>
-        <div>
-          <button className="new-task-button" type="button" onClick={handleNewTaskClick}>+ NOVA TAREFA</button>
-          <button className="filter-button" type="button" onClick={() => setFiltersVisible(!filtersVisible)}>FILTROS</button>
-        </div>
-      </section>
+      <Header handleNewTaskClick={handleNewTaskClick} toggleFilters={toggleFilters} />
 
       {filtersVisible && (
         <form onSubmit={handleFilterSubmit}>
