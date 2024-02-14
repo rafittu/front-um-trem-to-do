@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useTasks } from '../contexts/TaskContext';
 import Header from '../components/Header';
 import NewTaskForm from '../components/NewTaskForm';
+import FiltersForm from '../components/FiltersForm';
 
 import '../styles/Home.css';
 
@@ -302,43 +303,19 @@ function Home() {
     <div className="todo-app">
       <Header handleNewTaskClick={handleNewTaskClick} toggleFilters={toggleFilters} />
 
-      {filtersVisible && (
-        <form onSubmit={handleFilterSubmit}>
-          <div className="filters">
-            <label htmlFor="priority">
-              Prioridade:
-              <select id="priority" name="priority" value={filterOptions.priority} onChange={handleFilterChange}>
-                <option value="">Todas</option>
-                <option value="LOW">Baixa</option>
-                <option value="MEDIUM">Média</option>
-                <option value="HIGH">Alta</option>
-                <option value="URGENT">Urgente</option>
-              </select>
-            </label>
-            <label htmlFor="dueDate">
-              Data de Vencimento:
-              <input id="dueDate" type="date" name="dueDate" value={filterOptions.dueDate} onChange={handleFilterChange} />
-            </label>
-            <label htmlFor="status">
-              Status:
-              <select id="status" name="status" value={filterOptions.status} onChange={handleFilterChange}>
-                <option value="">Todos</option>
-                <option value="TODO">TODO</option>
-                <option value="DOING">DOING</option>
-                <option value="HOLD">HOLD</option>
-                <option value="DONE">DONE</option>
-              </select>
-            </label>
-          </div>
-        </form>
-      )}
-
       <NewTaskForm
         showNewTaskForm={showNewTaskForm}
         handleAddTask={handleAddTask}
         setShowNewTaskForm={setShowNewTaskForm}
         newTask={newTask}
         setNewTask={setNewTask}
+      />
+
+      <FiltersForm
+        filtersVisible={filtersVisible}
+        filterOptions={filterOptions}
+        handleFilterChange={handleFilterChange}
+        handleFilterSubmit={handleFilterSubmit}
       />
 
       <div className="columns">
