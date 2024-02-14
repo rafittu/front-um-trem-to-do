@@ -6,6 +6,7 @@ import NewTaskForm from '../components/NewTaskForm';
 import FiltersForm from '../components/FiltersForm';
 
 import '../styles/Home.css';
+import validateTask from '../utils/validations';
 
 function Home() {
   const [userLogged, setUserLogged] = useState(false);
@@ -31,6 +32,11 @@ function Home() {
 
   const accessToken = localStorage.getItem('keevoAccessToken');
 
+  const handleApiError = (error) => {
+    const errorMessage = error?.response?.data?.error?.message || 'Erro ao processar a solicitação.';
+    setApiErrorMessage(errorMessage);
+  };
+
   const getUserTasks = async () => {
     if (accessToken) {
       setUserLogged(true);
@@ -43,8 +49,7 @@ function Home() {
         });
         setTaskData(response.data);
       } catch (error) {
-        const errorMessage = error?.response?.data?.error?.message;
-        setApiErrorMessage(errorMessage);
+        handleApiError(error);
       }
     } else {
       const userLocalStorageTasks = JSON.parse(localStorage.getItem('userTasks')) || [];
@@ -74,8 +79,7 @@ function Home() {
       });
       getUserTasks();
     } catch (error) {
-      const errorMessage = error?.response?.data?.error?.message;
-      setApiErrorMessage(errorMessage);
+      handleApiError(error);
     }
   };
 
@@ -88,8 +92,7 @@ function Home() {
       });
       getUserTasks();
     } catch (error) {
-      const errorMessage = error?.response?.data?.error?.message;
-      setApiErrorMessage(errorMessage);
+      handleApiError(error);
     }
   };
 
@@ -115,25 +118,15 @@ function Home() {
       setEditedTask(null);
       getUserTasks();
     } catch (error) {
-      const errorMessage = error?.response?.data?.error?.message;
-      setApiErrorMessage(errorMessage);
+      handleApiError(error);
     }
   };
 
   const handleAddTask = async () => {
-    if (newTask.title.length < 3 || newTask.title.length > 180) {
-      alert('O título deve ter entre 3 e 180 caracteres.');
-      return;
-    }
-
-    if (newTask.description.length < 5 || newTask.description.length > 700) {
-      alert('A descrição deve ter entre 5 e 700 caracteres.');
-      return;
-    }
-
-    if (newTask.dueDate && new Date() > new Date(newTask.dueDate)) {
-      alert('A data de vencimento da tarefa deve ser posterior a atual.');
-      return;
+    try {
+      validateTask(newTask);
+    } catch (error) {
+      handleApiError(error);
     }
 
     if (newTask.dueDate) {
