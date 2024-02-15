@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+# 📝 Front-end da aplicação To-Do List!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+###
 
-## Available Scripts
+<br>
 
-In the project directory, you can run:
+Este projeto consiste na interface do usuário (front-end) como parte de um [desafio técnico](https://github.com/keevosoftwares/desafio-fullstack) para gerenciar uma lista de tarefas.
 
-### `npm start`
+Ele se integra com o [back-end da aplicação](https://github.com/rafittu/keevo-back-to-do) para fornecer uma solução completa ao usuário!
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<br>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tecnologias
 
-### `npm test`
+Foi utilizado as seguintes tecnologias no desenvolvimento:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React**: Biblioteca JavaScript para criar interfaces de usuário;
+- **React Router Dom**: Biblioteca para roteamento na aplicação;
+- **Axios**: Cliente HTTP baseado em promises para fazer requisições AJAX;
+- **Prop Types**: Verificação de tipos para props em componentes React;
 
-### `npm run build`
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Funcionalidades
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+A utilização da interface possui dois modos:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Acesso sem conta: as tarefas são salvas localmente no `local storage` do navegador.
+- Acesso com usuário cadastrado e autenticado: as tarefas são salvas no banco de dados da aplicação. Para utilizar nesse modo, é necessário que o [servidor back-end](https://github.com/rafittu/keevo-back-to-do) esteja em execução.
 
-### `npm run eject`
+<br>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Para ambos os modos, o usuário conta com os seguintes serviços:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Cadastrar uma nova tarefa.
+- Visualizar a lista de tarefas.
+- Filtrar tarefas por:
+    - **Prioridade**;
+    - **Data de vencimento**;
+    - **Status**;
+- Editar uma tarefa existente.
+- Excluir uma tarefa.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<br>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Instalação
 
-## Learn More
+Clonando o repositório:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+$ git clone git@github.com:rafittu/keevo-front-to-do.git
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Instalando as dependências:
 
-### Code Splitting
+```bash
+$ cd front-to-do
+$ npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+<br>
 
-### Analyzing the Bundle Size
+## Iniciando o app
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Crie um arquivo `.env` na raiz do projeto e preencha as informações de acordo com o arquivo `.env.example` disponível.
 
-### Making a Progressive Web App
+Iniciando o servidor:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+# modo de desenvolvimento
+$ npm run start
+```
 
-### Advanced Configuration
+<br>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Uso
 
-### Deployment
+Com a interface front-end em execução, você também pode iniciar o [servidor back-end](https://github.com/rafittu/keevo-back-to-do) e começar a explorar as funcionalidades!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+<br>
 
-### `npm run build` fails to minify
+##
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<p align="right">
+  <a href="https://www.linkedin.com/in/rafittu/">Rafael Ribeiro 🚀</a>
+</p>
