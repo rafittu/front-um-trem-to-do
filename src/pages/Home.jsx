@@ -7,9 +7,11 @@ import FiltersForm from '../components/FiltersForm';
 
 import '../styles/Home.css';
 import validateTask from '../utils/validations';
+import { useUser } from '../contexts/UserContext';
 
 function Home() {
   const [userLogged, setUserLogged] = useState(false);
+  const { userData, setUserData } = useUser();
   const { taskData, setTaskData } = useTasks();
   const [showNewTaskForm, setShowNewTaskForm] = useState(false);
   const [newTask, setNewTask] = useState({
@@ -57,9 +59,27 @@ function Home() {
     }
   };
 
+  const getUserData = async () => {
+    if (accessToken) {
+      try {
+        const response = await axios.get('http://localhost:3001/user/', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        const { name, username, socialName } = response.data;
+        setUserData({ name, username, socialName });
+      } catch (error) {
+        handleApiError(error);
+      }
+    }
+  };
+
   useEffect(() => {
     getUserTasks();
-  }, [newTask, editedTask]);
+    getUserData();
+  }, [newTask, editedTask, userData]);
 
   const createUserTask = async () => {
     try {

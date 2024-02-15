@@ -1,12 +1,15 @@
 import React from 'react';
 import Router from './Router';
 import { TaskProvider } from '../contexts/TaskContext';
+import { UserProvider } from '../contexts/UserContext';
 
 function ProviderManager() {
   return (
-    <TaskProvider>
-      <Router />
-    </TaskProvider>
+    <UserProvider>
+      <TaskProvider>
+        <Router />
+      </TaskProvider>
+    </UserProvider>
   );
 }
 
