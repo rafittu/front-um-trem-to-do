@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useUser } from '../contexts/UserContext';
 
 import '../styles/Login.css';
 
 function Login() {
   const navigate = useNavigate();
-
-  const { setUserData } = useUser();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,23 +22,6 @@ function Login() {
     }
   };
 
-  const getUserData = async (accessToken) => {
-    try {
-      const response = await axios.get('http://localhost:3001/user/', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      const { name, username, socialName } = response.data;
-      setUserData({ name, username, socialName });
-
-      return true;
-    } catch (err) {
-      return false;
-    }
-  };
-
   const validateLogin = async () => {
     try {
       const response = await axios.post('http://localhost:3001/auth/signin', {
@@ -51,8 +31,6 @@ function Login() {
 
       const { accessToken } = response.data;
       localStorage.setItem('keevoAccessToken', accessToken);
-
-      await getUserData(accessToken);
 
       return true;
     } catch (err) {
