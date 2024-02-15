@@ -1,0 +1,29 @@
+.signUp-section {
+  background-color: rgb(128, 128, 128, 0.3);
+  color: rgb(1, 8, 14);
+  position: relative;
+  left: 60%;
+  width: 300px;
+  margin-bottom: 210px;
+  padding: 20px;
+  border-radius: 10px;
+  transform: translate(-50%, 0);
+  margin-top: 90px;
+}
+
+.error-message {
+  display: block;
+  color: #e74c3c;
+  padding-bottom: 3px;
+  padding-right: 45px;
+  font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial,
+  sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  font-size: 14px;
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+  text-align: justify;
+}
+
+.inputs-container input.error {
+  border: 2px solid #e74c3c;
+}
