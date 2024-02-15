@@ -1,11 +1,12 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-
 import axios from 'axios';
 import { useTasks } from '../contexts/TaskContext';
+import Header from '../components/Header';
+import NewTaskForm from '../components/NewTaskForm';
+import FiltersForm from '../components/FiltersForm';
 
 import '../styles/Home.css';
+import validateTask from '../utils/validations';
 
 function Home() {
   const [userLogged, setUserLogged] = useState(false);
@@ -17,7 +18,6 @@ function Home() {
     description: '',
     priority: '',
     dueDate: '',
-    // categories: [],
     status: '',
   });
   const [expandedTaskId, setExpandedTaskId] = useState(null);
@@ -26,11 +26,16 @@ function Home() {
   const [filterOptions, setFilterOptions] = useState({
     priority: '',
     dueDate: '',
-    categories: '',
     status: '',
   });
+  const [apiErrorMessage, setApiErrorMessage] = useState('');
 
   const accessToken = localStorage.getItem('keevoAccessToken');
+
+  const handleApiError = (error) => {
+    const errorMessage = error?.response?.data?.error?.message || 'Erro ao processar a solicitação.';
+    setApiErrorMessage(errorMessage);
+  };
 
   const getUserTasks = async () => {
     if (accessToken) {
@@ -43,8 +48,8 @@ function Home() {
           },
         });
         setTaskData(response.data);
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        handleApiError(error);
       }
     } else {
       const userLocalStorageTasks = JSON.parse(localStorage.getItem('userTasks')) || [];
@@ -70,12 +75,11 @@ function Home() {
         description: '',
         priority: '',
         dueDate: '',
-        // categories: [],
         status: '',
       });
       getUserTasks();
     } catch (error) {
-      console.error(error);
+      handleApiError(error);
     }
   };
 
@@ -88,7 +92,7 @@ function Home() {
       });
       getUserTasks();
     } catch (error) {
-      console.error(error);
+      handleApiError(error);
     }
   };
 
@@ -114,24 +118,15 @@ function Home() {
       setEditedTask(null);
       getUserTasks();
     } catch (error) {
-      console.error(error);
+      handleApiError(error);
     }
   };
 
   const handleAddTask = async () => {
-    if (newTask.title.length < 3 || newTask.title.length > 180) {
-      alert('O título deve ter entre 3 e 180 caracteres.');
-      return;
-    }
-
-    if (newTask.description.length < 5 || newTask.description.length > 700) {
-      alert('A descrição deve ter entre 5 e 700 caracteres.');
-      return;
-    }
-
-    if (newTask.dueDate && new Date() > new Date(newTask.dueDate)) {
-      alert('A data de vencimento da tarefa deve ser posterior a atual.');
-      return;
+    try {
+      validateTask(newTask);
+    } catch (error) {
+      handleApiError(error);
     }
 
     if (newTask.dueDate) {
@@ -159,7 +154,6 @@ function Home() {
       description: '',
       priority: '',
       dueDate: '',
-      // categories: [],
       status: '',
     });
     setTaskData(updatedTasks);
@@ -172,7 +166,6 @@ function Home() {
       description: '',
       priority: '',
       dueDate: '',
-      // categories: [],
     });
   };
 
@@ -200,8 +193,10 @@ function Home() {
         if (task.id === editedTask.id) {
           return editedTask;
         }
+
         return task;
       });
+
       localStorage.setItem('userTasks', JSON.stringify(updatedTasks));
       setTaskData(updatedTasks);
       setEditedTask(null);
@@ -210,14 +205,14 @@ function Home() {
 
   const renderTasksByStatus = (status) => taskData
     .filter((task) => task.status === status)
+
     .filter((task) => {
       if (filterOptions.priority && task.priority !== filterOptions.priority) return false;
       if (filterOptions.dueDate && task.dueDate !== filterOptions.dueDate) return false;
-      // if (filterOptions.categories
-      //   && !task.categories.includes(filterOptions.categories)) return false;
       if (filterOptions.status && task.status !== filterOptions.status) return false;
       return true;
     })
+
     .map((task) => (
       <div
         key={task.id}
@@ -228,55 +223,58 @@ function Home() {
         <button type="button" className="delete-button" onClick={() => handleDeleteTask(task.id)}>X</button>
         <h3>{task.title}</h3>
         <p>{task.description}</p>
+
         {expandedTaskId === task.id && (
-        <>
-          <p>
-            Data de Vencimento:
-            {task.dueDate}
-          </p>
-          {/* <p>
-            Categorias:
-            {task.categories.join(', ')}
-          </p> */}
-          <p>
-            Status:
-            {task.status}
-          </p>
-          <button type="button" onClick={() => handleEditTask(task.id)}>Editar</button>
-        </>
+          <>
+            <p>
+              Data de Vencimento:
+              {task.dueDate}
+            </p>
+            <p>
+              Status:
+              {task.status}
+            </p>
+            <button type="button" onClick={() => handleEditTask(task.id)}>Editar</button>
+          </>
         )}
+
         {editedTask && editedTask.id === task.id && (
-        <div>
-          <input type="text" value={editedTask.title} onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })} />
-          <textarea
-            value={editedTask.description}
-            onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
-          />
-          <select
-            value={editedTask.priority}
-            onChange={(e) => setEditedTask({ ...editedTask, priority: e.target.value })}
-          >
-            <option value="">Selecione a prioridade</option>
-            <option value="LOW">Baixa</option>
-            <option value="MEDIUM">Média</option>
-            <option value="HIGH">Alta</option>
-            <option value="URGENT">Urgente</option>
-          </select>
-          <input type="date" value={editedTask.dueDate} onChange={(e) => setEditedTask({ ...editedTask, dueDate: e.target.value })} />
-          {/* <input type="text" placeholder="Categorias (separadas por vírgula)" value={editedTask.categories.join(', ')} onChange={(e) => setEditedTask({ ...editedTask, categories: e.target.value.split(', ') })} /> */}
-          <select
-            value={editedTask.status}
-            onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value })}
-          >
-            <option value="">Selecione o status</option>
-            <option value="TODO">TODO</option>
-            <option value="DOING">DOING</option>
-            <option value="HOLD">HOLD</option>
-            <option value="DONE">DONE</option>
-          </select>
-          <button type="button" onClick={handleSaveEdit}>Salvar</button>
-        </div>
+          <div>
+            <input type="text" value={editedTask.title} onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })} />
+
+            <textarea
+              value={editedTask.description}
+              onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
+            />
+
+            <select
+              value={editedTask.priority}
+              onChange={(e) => setEditedTask({ ...editedTask, priority: e.target.value })}
+            >
+              <option value="">Selecione a prioridade</option>
+              <option value="LOW">Baixa</option>
+              <option value="MEDIUM">Média</option>
+              <option value="HIGH">Alta</option>
+              <option value="URGENT">Urgente</option>
+            </select>
+
+            <input type="date" value={editedTask.dueDate} onChange={(e) => setEditedTask({ ...editedTask, dueDate: e.target.value })} />
+
+            <select
+              value={editedTask.status}
+              onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value })}
+            >
+              <option value="">Selecione o status</option>
+              <option value="TODO">TODO</option>
+              <option value="DOING">DOING</option>
+              <option value="HOLD">HOLD</option>
+              <option value="DONE">DONE</option>
+            </select>
+
+            <button type="button" onClick={handleSaveEdit}>Salvar</button>
+          </div>
         )}
+
       </div>
     ));
 
@@ -290,80 +288,28 @@ function Home() {
     setFiltersVisible(false);
   };
 
+  const toggleFilters = () => {
+    setFiltersVisible(!filtersVisible);
+  };
+
   return (
     <div className="todo-app">
-      <section>
-        <div className="user-actions">
-          <Link to="/login">Entrar</Link>
-        </div>
+      <Header handleNewTaskClick={handleNewTaskClick} toggleFilters={toggleFilters} />
 
-        <h1>To Do App</h1>
-        <div>
-          <button className="new-task-button" type="button" onClick={handleNewTaskClick}>+ NOVA TAREFA</button>
-          <button className="filter-button" type="button" onClick={() => setFiltersVisible(!filtersVisible)}>FILTROS</button>
-        </div>
-      </section>
+      <NewTaskForm
+        showNewTaskForm={showNewTaskForm}
+        handleAddTask={handleAddTask}
+        setShowNewTaskForm={setShowNewTaskForm}
+        newTask={newTask}
+        setNewTask={setNewTask}
+      />
 
-      {filtersVisible && (
-        <form onSubmit={handleFilterSubmit}>
-          <div className="filters">
-            <label htmlFor="priority">
-              Prioridade:
-              <select id="priority" name="priority" value={filterOptions.priority} onChange={handleFilterChange}>
-                <option value="">Todas</option>
-                <option value="low">Baixa</option>
-                <option value="medium">Média</option>
-                <option value="high">Alta</option>
-                <option value="urgent">Urgente</option>
-              </select>
-            </label>
-            <label htmlFor="dueDate">
-              Data de Vencimento:
-              <input id="dueDate" type="date" name="dueDate" value={filterOptions.dueDate} onChange={handleFilterChange} />
-            </label>
-            {/* <label htmlFor="categories">
-              Categorias:
-              <input id="categories" type="text" name="categories" value={filterOptions.categories} onChange={handleFilterChange} />
-            </label> */}
-            <label htmlFor="status">
-              Status:
-              <select id="status" name="status" value={filterOptions.status} onChange={handleFilterChange}>
-                <option value="">Todos</option>
-                <option value="TODO">TODO</option>
-                <option value="DOING">DOING</option>
-                <option value="HOLD">HOLD</option>
-                <option value="DONE">DONE</option>
-              </select>
-            </label>
-            <button type="submit">Aplicar Filtros</button>
-          </div>
-        </form>
-      )}
-
-      {showNewTaskForm && (
-        <div className="new-task">
-          <h2>Nova Tarefa</h2>
-          <input type="text" placeholder="Título" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} />
-          <textarea placeholder="Descrição" value={newTask.description} onChange={(e) => setNewTask({ ...newTask, description: e.target.value })} />
-          <select
-            value={newTask.priority}
-            onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
-          >
-            <option value="">Selecione a prioridade</option>
-            <option value="LOW">Baixa</option>
-            <option value="MEDIUM">Média</option>
-            <option value="HIGH">Alta</option>
-            <option value="URGENT">Urgente</option>
-          </select>
-          <label htmlFor="dueDate">
-            Data de Vencimento:
-            <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} />
-          </label>
-          {/* <input type="text" placeholder="Categorias (separadas por vírgula)" value={newTask.categories.join(', ')} onChange={(e) => setNewTask({ ...newTask, categories: e.target.value.split(', ') })} /> */}
-          <button type="button" onClick={handleAddTask}>Adicionar Tarefa</button>
-          <button type="button" onClick={() => setShowNewTaskForm(false)}>Cancelar</button>
-        </div>
-      )}
+      <FiltersForm
+        filtersVisible={filtersVisible}
+        filterOptions={filterOptions}
+        handleFilterChange={handleFilterChange}
+        handleFilterSubmit={handleFilterSubmit}
+      />
 
       <div className="columns">
         <div className="column">
@@ -383,6 +329,10 @@ function Home() {
           {renderTasksByStatus('DONE')}
         </div>
       </div>
+
+      {apiErrorMessage && (
+      <div className="error-message">{apiErrorMessage}</div>
+      )}
     </div>
   );
 }
