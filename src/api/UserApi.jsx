@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const baseUrl = process.env.REACT_APP_TODO_API_URL || '';
+const externalApiUrl = process.env.REACT_APP_EXTERNAL_API_ALMA_URL || '';
 
 export const createUserApi = async (signUpBody) => {
   try {
@@ -29,6 +30,16 @@ export const getUserDataApi = async (accessToken) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const recoverPasswordApi = async (email) => {
+  try {
+    const response = await axios.post(`${externalApiUrl}/auth/send-recover-password-email`, email);
 
     return response.data;
   } catch (error) {
