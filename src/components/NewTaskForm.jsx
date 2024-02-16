@@ -56,7 +56,6 @@ NewTaskForm.propTypes = {
     description: PropTypes.string.isRequired,
     priority: PropTypes.string.isRequired,
     dueDate: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
   }).isRequired,
   setNewTask: PropTypes.func.isRequired,
 };
