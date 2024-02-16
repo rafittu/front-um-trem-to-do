@@ -313,7 +313,7 @@ function Home() {
   };
 
   return (
-    <div className="todo-app">
+    <div className="todo-app bg-image">
       <Header handleNewTaskClick={handleNewTaskClick} toggleFilters={toggleFilters} />
 
       <NewTaskForm

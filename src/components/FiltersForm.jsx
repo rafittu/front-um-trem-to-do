@@ -6,40 +6,46 @@ function FiltersForm({
 }) {
   return (
     filtersVisible && (
-      <form onSubmit={handleFilterSubmit}>
+      <form className="filters-form" onSubmit={handleFilterSubmit}>
         <div className="filters">
-          <label htmlFor="priority">
-            Prioridade:
-            <select id="priority" name="priority" value={filterOptions.priority} onChange={handleFilterChange}>
-              <option value="">Todas</option>
-              <option value="LOW">Baixa</option>
-              <option value="MEDIUM">Média</option>
-              <option value="HIGH">Alta</option>
-              <option value="URGENT">Urgente</option>
-            </select>
-          </label>
+          <div className="filter-group">
+            <label htmlFor="priority">
+              <span>Prioridade:</span>
+              <select id="priority" name="priority" value={filterOptions.priority} onChange={handleFilterChange}>
+                <option value="">Todas</option>
+                <option value="LOW">Baixa</option>
+                <option value="MEDIUM">Média</option>
+                <option value="HIGH">Alta</option>
+                <option value="URGENT">Urgente</option>
+              </select>
+            </label>
+          </div>
 
-          <label htmlFor="dueDate">
-            Data de Vencimento:
-            <input
-              id="dueDate"
-              type="date"
-              name="dueDate"
-              value={filterOptions.dueDate}
-              onChange={handleFilterChange}
-            />
-          </label>
+          <div className="filter-group">
+            <label htmlFor="dueDate">
+              <span>Data de Vencimento:</span>
+              <input
+                id="dueDate"
+                type="date"
+                name="dueDate"
+                value={filterOptions.dueDate}
+                onChange={handleFilterChange}
+              />
+            </label>
+          </div>
 
-          <label htmlFor="status">
-            Status:
-            <select id="status" name="status" value={filterOptions.status} onChange={handleFilterChange}>
-              <option value="">Todos</option>
-              <option value="TODO">TODO</option>
-              <option value="DOING">DOING</option>
-              <option value="HOLD">HOLD</option>
-              <option value="DONE">DONE</option>
-            </select>
-          </label>
+          <div className="filter-group">
+            <label htmlFor="status">
+              <span>Status:</span>
+              <select id="status" name="status" value={filterOptions.status} onChange={handleFilterChange}>
+                <option value="">Todos</option>
+                <option value="TODO">TODO</option>
+                <option value="DOING">DOING</option>
+                <option value="HOLD">HOLD</option>
+                <option value="DONE">DONE</option>
+              </select>
+            </label>
+          </div>
         </div>
       </form>
     )

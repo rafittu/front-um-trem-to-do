@@ -2,13 +2,13 @@
   background-color: rgb(128, 128, 128, 0.3);
   color: rgb(1, 8, 14);
   position: relative;
-  left: 60%;
+  left: 70%;
   width: 300px;
   margin-bottom: 210px;
   padding: 20px;
   border-radius: 10px;
   transform: translate(-50%, 0);
-  margin-top: 90px;
+  margin-top: 150px;
 }
 
 .error-message {
