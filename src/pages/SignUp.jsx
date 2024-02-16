@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import InputLabel from '../components/InputLabel';
+import { createUserApi, userLoginApi } from '../api/UserApi';
 
 import '../styles/Signup.css';
 
@@ -138,17 +138,9 @@ function SignUp() {
     };
 
     try {
-      await axios.post(
-        'http://localhost:3001/user/create',
-        signUpBody,
-      );
+      await createUserApi(signUpBody);
 
-      const response = await axios.post('http://localhost:3001/auth/signin', {
-        email: signUpBody.email,
-        password: signUpBody.password,
-      });
-
-      const { accessToken } = response.data;
+      const { accessToken } = await userLoginApi(signUpBody.email, signUpBody.password);
       localStorage.setItem('keevoAccessToken', accessToken);
 
       return true;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { userLoginApi } from '../api/UserApi';
 
 import '../styles/Login.css';
 
@@ -24,12 +24,7 @@ function Login() {
 
   const validateLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/auth/signin', {
-        email,
-        password,
-      });
-
-      const { accessToken } = response.data;
+      const { accessToken } = await userLoginApi(email, password);
       localStorage.setItem('keevoAccessToken', accessToken);
 
       return true;
