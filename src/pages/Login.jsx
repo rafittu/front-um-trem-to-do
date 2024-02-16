@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { userLoginApi } from '../api/UserApi';
@@ -54,7 +55,6 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <div className="inputs-container">
             <label htmlFor="login">
-              E-mail:
               <input
                 name="email"
                 id="login"
@@ -67,7 +67,6 @@ function Login() {
             </label>
 
             <label htmlFor="password">
-              Senha:
               <input
                 name="password"
                 id="password"
