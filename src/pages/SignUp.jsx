@@ -178,39 +178,41 @@ function SignUp() {
   };
 
   return (
-    <section className="signUp-section">
-      <form onSubmit={handleSubmit}>
-        <div className="inputs-container">
-          {fields.map((field) => (
-            <InputLabel htmlFor={field.id} key={field.id}>
-              {fieldErrors[field.id] && (
+    <div className="background-image">
+      <section className="signUp-section">
+        <form onSubmit={handleSubmit}>
+          <div className="inputs-container">
+            {fields.map((field) => (
+              <InputLabel htmlFor={field.id} key={field.id}>
+                {fieldErrors[field.id] && (
                 <span className="error-message">{fieldErrors[field.id]}</span>
-              )}
+                )}
 
-              <input
-                name={field.id}
-                id={field.id}
-                value={formData[field.id]}
-                onChange={handleInputChange}
-                type={field.type}
-                placeholder={field.label}
-                className={fieldErrors[field.id] ? 'error' : ''}
-              />
-            </InputLabel>
-          ))}
-        </div>
+                <input
+                  name={field.id}
+                  id={field.id}
+                  value={formData[field.id]}
+                  onChange={handleInputChange}
+                  type={field.type}
+                  placeholder={field.label}
+                  className={fieldErrors[field.id] ? 'error' : ''}
+                />
+              </InputLabel>
+            ))}
+          </div>
 
-        {apiErrorMessage && (
+          {apiErrorMessage && (
           <div className="error-message">{apiErrorMessage}</div>
-        )}
+          )}
 
-        <div className="inputs-buttons">
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Registrando...' : 'Cadastrar'}
-          </button>
-        </div>
-      </form>
-    </section>
+          <div className="inputs-buttons">
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? 'Registrando...' : 'Cadastrar'}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
   );
 }
 
