@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import InputLabel from '../components/InputLabel';
+import { createUserApi, userLoginApi } from '../api/UserApi';
 
 import '../styles/Signup.css';
 
@@ -138,17 +138,9 @@ function SignUp() {
     };
 
     try {
-      await axios.post(
-        'http://localhost:3001/user/create',
-        signUpBody,
-      );
+      await createUserApi(signUpBody);
 
-      const response = await axios.post('http://localhost:3001/auth/signin', {
-        email: signUpBody.email,
-        password: signUpBody.password,
-      });
-
-      const { accessToken } = response.data;
+      const { accessToken } = await userLoginApi(signUpBody.email, signUpBody.password);
       localStorage.setItem('keevoAccessToken', accessToken);
 
       return true;
@@ -178,39 +170,41 @@ function SignUp() {
   };
 
   return (
-    <section className="signUp-section">
-      <form onSubmit={handleSubmit}>
-        <div className="inputs-container">
-          {fields.map((field) => (
-            <InputLabel htmlFor={field.id} key={field.id}>
-              {fieldErrors[field.id] && (
+    <div className="background-image">
+      <section className="signUp-section">
+        <form onSubmit={handleSubmit}>
+          <div className="inputs-container">
+            {fields.map((field) => (
+              <InputLabel htmlFor={field.id} key={field.id}>
+                {fieldErrors[field.id] && (
                 <span className="error-message">{fieldErrors[field.id]}</span>
-              )}
+                )}
 
-              <input
-                name={field.id}
-                id={field.id}
-                value={formData[field.id]}
-                onChange={handleInputChange}
-                type={field.type}
-                placeholder={field.label}
-                className={fieldErrors[field.id] ? 'error' : ''}
-              />
-            </InputLabel>
-          ))}
-        </div>
+                <input
+                  name={field.id}
+                  id={field.id}
+                  value={formData[field.id]}
+                  onChange={handleInputChange}
+                  type={field.type}
+                  placeholder={field.label}
+                  className={fieldErrors[field.id] ? 'error' : ''}
+                />
+              </InputLabel>
+            ))}
+          </div>
 
-        {apiErrorMessage && (
+          {apiErrorMessage && (
           <div className="error-message">{apiErrorMessage}</div>
-        )}
+          )}
 
-        <div className="inputs-buttons">
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Registrando...' : 'Cadastrar'}
-          </button>
-        </div>
-      </form>
-    </section>
+          <div className="inputs-buttons">
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? 'Registrando...' : 'Cadastrar'}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
   );
 }
 

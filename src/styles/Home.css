@@ -4,8 +4,29 @@
   padding: 0;
 }
 
+.bg-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../public/todo.jpg");
+  background-size: cover;
+  opacity: 0.3;
+  z-index: -1;
+}
+
 .todo-app {
-  padding: 21px;
+  padding: 27px;
 }
 
 body {
@@ -86,28 +107,56 @@ h1 {
 }
 
 .filters-form {
-  background-color: #fff;
   border-radius: 8px;
-  padding: 20px;
-  margin-top: 20px;
+  background-color: #ffffff7a;
+  padding: 18px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 27px;
+  width: 60%;
+}
+
+.filters-form .filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.filters-form .filter-group {
+  flex-basis: calc(30% - 20px);
 }
 
 .filters-form label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .filters-form label span {
   font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .filters-form select,
 .filters-form input[type="date"] {
   width: 100%;
   padding: 10px;
-  margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.filters-form select:focus,
+.filters-form input[type="date"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.filters-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px 18px;
 }
 
 .task-card {
@@ -208,18 +257,22 @@ h1 {
 
 .new-task {
   position: absolute;
-  top: 40%;
-  left: 15%;
+  top: 47%;
+  left: 13%;
   transform: translate(-50%, -50%);
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   padding: 10px;
   width: 370px;
   z-index: 999;
+  border-radius: 18px;
+  padding: 21px;
 }
 
 .new-task h2 {
   margin-top: 0;
+  text-align: center;
+  padding-bottom: 18px;
 }
 
 .new-task input[type="text"],
@@ -245,6 +298,7 @@ h1 {
   cursor: pointer;
   border-radius: 4px;
   margin-left: 7px;
+  margin-top: 9px;
 }
 
 .new-task button:hover {

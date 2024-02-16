@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { userLoginApi } from '../api/UserApi';
 
 import '../styles/Login.css';
 
@@ -24,12 +24,7 @@ function Login() {
 
   const validateLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/auth/signin', {
-        email,
-        password,
-      });
-
-      const { accessToken } = response.data;
+      const { accessToken } = await userLoginApi(email, password);
       localStorage.setItem('keevoAccessToken', accessToken);
 
       return true;
@@ -54,59 +49,61 @@ function Login() {
   };
 
   return (
-    <section className="signIn">
-      <form onSubmit={handleSubmit}>
-        <div className="inputs-container">
-          <label htmlFor="login">
-            E-mail:
-            <input
-              name="email"
-              id="login"
-              value={email}
-              onChange={handleChange}
-              type="email"
-              required
-              placeholder="e-mail"
-            />
-          </label>
+    <div className="background-image">
+      <section className="signIn">
+        <form onSubmit={handleSubmit}>
+          <div className="inputs-container">
+            <label htmlFor="login">
+              E-mail:
+              <input
+                name="email"
+                id="login"
+                value={email}
+                onChange={handleChange}
+                type="email"
+                required
+                placeholder="e-mail"
+              />
+            </label>
 
-          <label htmlFor="password">
-            Senha:
-            <input
-              name="password"
-              id="password"
-              value={password}
-              onChange={handleChange}
-              type="password"
-              required
-              placeholder="senha"
-            />
-          </label>
-        </div>
+            <label htmlFor="password">
+              Senha:
+              <input
+                name="password"
+                id="password"
+                value={password}
+                onChange={handleChange}
+                type="password"
+                required
+                placeholder="senha"
+              />
+            </label>
+          </div>
 
-        <span className="recover-password">
-          <Link to="/recover-password">
-            <p>esqueci a senha</p>
-          </Link>
-        </span>
+          <span className="recover-password">
+            <Link to="/recover-password">
+              <p>esqueci a senha</p>
+            </Link>
+          </span>
 
-        {error && (
-        <div className="error-msg">
-          <p>E-mail ou senha inválido</p>
-        </div>
-        )}
+          {error && (
+          <div className="error-msg">
+            <p>E-mail ou senha inválido</p>
+          </div>
+          )}
 
-        <div className="inputs-buttons">
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Entrando...' : 'Entrar'}
-          </button>
+          <div className="inputs-buttons">
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? 'Entrando...' : 'Entrar'}
+            </button>
 
-          <Link to="/signup">
-            <button type="button">Cadastrar</button>
-          </Link>
-        </div>
-      </form>
-    </section>
+            <Link to="/signup">
+              <button type="button">Cadastrar</button>
+            </Link>
+          </div>
+        </form>
+      </section>
+    </div>
   );
 }
 

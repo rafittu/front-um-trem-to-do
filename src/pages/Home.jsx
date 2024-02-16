@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useTasks } from '../contexts/TaskContext';
 import Header from '../components/Header';
 import NewTaskForm from '../components/NewTaskForm';
 import FiltersForm from '../components/FiltersForm';
-
-import '../styles/Home.css';
 import validateTask from '../utils/validations';
 import { useUser } from '../contexts/UserContext';
+import {
+  createUserTaskApi, getUserTasksApi, updateUserTaskApi, deleteUserTaskApi,
+} from '../api/TaskApi';
+import { getUserDataApi } from '../api/UserApi';
+
+import '../styles/Home.css';
 
 function Home() {
   const [userLogged, setUserLogged] = useState(false);
@@ -41,15 +44,10 @@ function Home() {
 
   const getUserTasks = async () => {
     if (accessToken) {
-      setUserLogged(true);
-
       try {
-        const response = await axios.get('http://localhost:3001/task/filter', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setTaskData(response.data);
+        const tasks = await getUserTasksApi(accessToken);
+        setTaskData(tasks);
+        setUserLogged(true);
       } catch (error) {
         handleApiError(error);
       }
@@ -62,13 +60,7 @@ function Home() {
   const getUserData = async () => {
     if (accessToken) {
       try {
-        const response = await axios.get('http://localhost:3001/user/', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        const { name, username, socialName } = response.data;
+        const { name, username, socialName } = await getUserDataApi(accessToken);
         setUserData({ name, username, socialName });
       } catch (error) {
         handleApiError(error);
@@ -83,11 +75,8 @@ function Home() {
 
   const createUserTask = async () => {
     try {
-      await axios.post('http://localhost:3001/task/create', newTask, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await createUserTaskApi(accessToken, newTask);
+
       setShowNewTaskForm(false);
       setNewTask({
         id: '',
@@ -105,11 +94,7 @@ function Home() {
 
   const deleteUserTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:3001/task/delete/${taskId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await deleteUserTaskApi(accessToken, taskId);
       getUserTasks();
     } catch (error) {
       handleApiError(error);
@@ -130,11 +115,8 @@ function Home() {
     }
 
     try {
-      await axios.patch(`http://localhost:3001/task/update/${idTask}`, editedTask, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await updateUserTaskApi(accessToken, idTask, editedTask);
+
       setEditedTask(null);
       getUserTasks();
     } catch (error) {
@@ -313,7 +295,7 @@ function Home() {
   };
 
   return (
-    <div className="todo-app">
+    <div className="todo-app bg-image">
       <Header handleNewTaskClick={handleNewTaskClick} toggleFilters={toggleFilters} />
 
       <NewTaskForm
