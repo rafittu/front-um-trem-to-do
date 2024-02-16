@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001';
+const baseUrl = process.env.REACT_APP_TODO_API_URL || '';
 
 export const createUserApi = async (signUpBody) => {
   try {
