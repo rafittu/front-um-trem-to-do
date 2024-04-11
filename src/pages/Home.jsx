@@ -35,7 +35,7 @@ function Home() {
   });
   const [apiErrorMessage, setApiErrorMessage] = useState('');
 
-  const accessToken = localStorage.getItem('keevoAccessToken');
+  const accessToken = localStorage.getItem('todoAccessToken');
 
   const handleApiError = (error) => {
     const errorMessage = error?.response?.data?.error?.message || 'Erro ao processar a solicitação.';

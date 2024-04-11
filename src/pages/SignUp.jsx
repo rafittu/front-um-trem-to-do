@@ -141,7 +141,7 @@ function SignUp() {
       await createUserApi(signUpBody);
 
       const { accessToken } = await userLoginApi(signUpBody.email, signUpBody.password);
-      localStorage.setItem('keevoAccessToken', accessToken);
+      localStorage.setItem('todoAccessToken', accessToken);
 
       return true;
     } catch (error) {

@@ -26,7 +26,7 @@ function Login() {
   const validateLogin = async () => {
     try {
       const { accessToken } = await userLoginApi(email, password);
-      localStorage.setItem('keevoAccessToken', accessToken);
+      localStorage.setItem('todoAccessToken', accessToken);
 
       return true;
     } catch (err) {
